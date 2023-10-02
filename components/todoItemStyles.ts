@@ -76,5 +76,5 @@ export const CategoryContainer = styled.div`
 `;
 
 export const DeleteButton = styled.button`
-  background-color: transparent;
+  background-color: transparent !important;
 `;

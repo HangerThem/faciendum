@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: var(--primary-color);
     font-family: "K2D", sans-serif;
     color: var(--secondary-color);
-    border: 1px solid var(--secondary-color);
+    border: 1px solid var(--tertiary-color);
     padding: 0.625rem 1.25rem;
     border-radius: 0.3125em;
     cursor: pointer;
@@ -42,9 +42,9 @@ const GlobalStyle = createGlobalStyle`
     transition: all 0.2s ease-in-out;
   }
 
-  button:hover {
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
+  button:hover,
+  button:focus {
+    background-color: var(--tertiary-color);
   }
 
   nav {
@@ -54,6 +54,7 @@ const GlobalStyle = createGlobalStyle`
     position: fixed;
     z-index: 1;
     background-color: var(--quaternary-color);
+    color: var(--secondary-color);
     width: 100%;
     height: 5rem;
     margin: 0;

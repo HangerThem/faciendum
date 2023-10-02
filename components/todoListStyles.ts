@@ -16,4 +16,8 @@ export const TodoItemsContainer = styled.div`
   gap: 16px;
   justify-content: center;
   padding: 16px;
+
+  p {
+    color: var(--secondary-color);
+  }
 `;
