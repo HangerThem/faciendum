@@ -1,95 +1,106 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
 
-export default function Home() {
+import { useTodoContext } from "@/contexts/todoAppContext";
+import { useThemeContext } from "@/contexts/themeAppContext";
+import TodoList from "@/components/todoList";
+import PlusIcon from "@/icons/plusIcon";
+import DarkIcon from "@/icons/darkIcon";
+import LightIcon from "@/icons/lightIcon";
+import TrashIcon from "@/icons/trashIcon";
+import { categories } from "@/data/categories";
+import { v4 as uuidv4 } from "uuid";
+import { useRef, useState } from "react";
+import Select from "react-select";
+import React from "react";
+
+const App = () => {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const todoContext = useTodoContext();
+  const themeContext = useThemeContext();
+  const [title, setTitle] = useState<string>("");
+  const [category, setCategory] = useState<Category>(categories[0]);
+
+  const handleAddTodo = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!title) return;
+    const id = uuidv4();
+    todoContext.addTodo({
+      id,
+      title,
+      category: category,
+      completed: false,
+    });
+    setTitle("");
+    dialogRef.current?.close();
+  };
+
+  const openDialog = () => dialogRef.current?.showModal();
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
+    <div id="root" className={themeContext.theme.theme}>
+      <nav>
+        <h1>Faciendum</h1>
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+          <button onClick={openDialog}>
+            <PlusIcon />
+          </button>
+          <button onClick={todoContext.removeAllTodos}>
+            <TrashIcon />
+          </button>
+          <button onClick={themeContext.toggleTheme}>
+            {themeContext.theme.theme === "dark" ? <LightIcon /> : <DarkIcon />}
+          </button>
         </div>
-      </div>
+      </nav>
+      <dialog ref={dialogRef}>
+        <form onSubmit={handleAddTodo}>
+          <Select
+            options={categories}
+            styles={{
+              control: (base: any, state: any) => ({
+                ...base,
+                border: state.isFocused ? 0 : 0,
+                boxShadow: state.isFocused ? 0 : 0,
+                color: "#fff",
+                "&:hover": {
+                  border: state.isFocused ? 0 : 0,
+                },
+              }),
+              option: (providers: any, state: any) => ({
+                ...providers,
+                backgroundColor:
+                  state.isSelected || state.isFocused ? "#555" : "#000",
+                cursor: state.isSelected ? "default" : "pointer",
+                color: "#fff",
+                outline: "none",
+              }),
+              singleValue: (providers: any) => ({
+                ...providers,
+                color: "#000",
+                outline: "none",
+              }),
+              menu: (providers: any) => ({
+                ...providers,
+                backgroundColor: "#000",
+                color: "#fff",
+                outline: "none",
+              }),
+            }}
+            isSearchable={false}
+            defaultValue={category}
+            onChange={(e: any) => setCategory(e as Category)}
+          />
+          <input
+            type="text"
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
+          />
+          <button type="submit">Add</button>
+        </form>
+      </dialog>
+      <TodoList />
+    </div>
+  );
+};
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default React.memo(App);
