@@ -19,6 +19,12 @@ const todoReducer = (state: TodoItem[], action: TodoAction) => {
       return [];
     case "SET_TODOS":
       return action.payload;
+    case "SET_SEARCH":
+      return state.map((todo) =>
+        todo.title.toLowerCase().includes(action.payload.toLowerCase())
+          ? { ...todo, hidden: false }
+          : { ...todo, hidden: true }
+      );
     default:
       return state;
   }

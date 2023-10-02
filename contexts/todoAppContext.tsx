@@ -11,16 +11,19 @@ import todoReducer from "@/reducers/todoReducer";
 
 interface TodoContextData {
   todos: TodoItem[];
+  search: string;
   addTodo: (todo: TodoItem) => void;
   changeCompleted: (id: string, completed: boolean) => void;
   removeTodo: (id: string) => void;
   removeAllTodos: () => void;
+  setSearch: (search: string) => void;
 }
 
 const TodoContext = createContext<TodoContextData>({} as TodoContextData);
 
 export const TodoProvider = ({ children }: { children: ReactNode }) => {
   const [todos, dispatch] = useReducer(todoReducer, []);
+  const { search } = useTodoContext();
 
   useEffect(() => {
     try {
@@ -55,12 +58,18 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("todos", JSON.stringify(newTodos));
   };
 
+  const setSearch = (search: string) => {
+    dispatch({ type: "SET_SEARCH", payload: search });
+  };
+
   const value = {
     todos,
+    search,
     addTodo,
     changeCompleted,
     removeTodo,
     removeAllTodos,
+    setSearch,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

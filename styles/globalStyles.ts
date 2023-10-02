@@ -68,10 +68,6 @@ const GlobalStyle = createGlobalStyle`
     margin: 0 1.25rem;
   }
 
-  nav button {
-    margin: 0 0.625rem;
-  }
-
   dialog {
     border-radius: 0.9375em;
     border: none;

@@ -10,9 +10,12 @@ const TodoList: React.FC = () => {
   return (
     <TodoListContainer>
       <TodoItemsContainer>
-        {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
-        ))}
+        {todos.map((todo) =>
+          todo.hidden ? null : <TodoItem key={todo.id} todo={todo} />
+        )}
+        {todos.length > 0 && todos.every((todo) => todo.hidden) && (
+          <p>No todos found! 😢</p>
+        )}
         {todos.length === 0 && <p>No todos! Hurray! 🎉</p>}
       </TodoItemsContainer>
     </TodoListContainer>

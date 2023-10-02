@@ -3,4 +3,5 @@ interface TodoItem {
   category: Category;
   title: string;
   completed: boolean;
+  hidden: boolean;
 }

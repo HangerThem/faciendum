@@ -10,6 +10,7 @@ import TrashIcon from "@/icons/trashIcon";
 import { useRef } from "react";
 import AddTodoDialog from "@/components/addTodoDialog";
 import React from "react";
+import { NavActions, Search } from "./appStyles";
 
 const App = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -22,7 +23,13 @@ const App = () => {
     <div id="root" className={themeContext.theme.theme}>
       <nav>
         <h1>Faciendum</h1>
-        <div>
+        <NavActions>
+          <Search
+            type="text"
+            placeholder="Search..."
+            value={todoContext.search}
+            onChange={(e) => todoContext.setSearch(e.target.value)}
+          />
           <button onClick={openDialog}>
             <PlusIcon />
           </button>
@@ -32,7 +39,7 @@ const App = () => {
           <button onClick={themeContext.toggleTheme}>
             {themeContext.theme.theme === "dark" ? <LightIcon /> : <DarkIcon />}
           </button>
-        </div>
+        </NavActions>
       </nav>
       <AddTodoDialog dialogRef={dialogRef} />
       <TodoList />

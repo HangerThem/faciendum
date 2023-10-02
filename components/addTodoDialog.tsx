@@ -23,6 +23,7 @@ function AddTodoDialog({ dialogRef }: AddTodoDialogProps) {
       title,
       category: category,
       completed: false,
+      hidden: false,
     });
     setTitle("");
     dialogRef.current?.close();
