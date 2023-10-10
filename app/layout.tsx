@@ -22,8 +22,8 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
 };
 
 const metadata: Metadata = {
-  title: "Next.js ToDo App",
-  description: "A simple ToDo app built with Next.js",
+  title: "Faciendum",
+  description: "A todo app built with Next.js, React, and TypeScript.",
 };
 
 const htmlProps: React.HTMLAttributes<HTMLHtmlElement> = {};
