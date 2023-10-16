@@ -12,7 +12,7 @@ interface ThemeContextData {
 }
 
 const ThemeContext = createContext<ThemeContextData>({
-  theme: { theme: "light" },
+  theme: { theme: "dark" },
   toggleTheme: () => {},
 });
 
