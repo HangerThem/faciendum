@@ -17,7 +17,7 @@ const ThemeContext = createContext<ThemeContextData>({
 });
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, themeDispatch] = useReducer(themeReducer, { theme: "light" });
+  const [theme, themeDispatch] = useReducer(themeReducer, { theme: "dark" });
 
   const toggleTheme = () => {
     themeDispatch({ type: ThemeActionTypes.TOGGLE_THEME });

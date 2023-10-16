@@ -5,6 +5,7 @@ import {
   useContext,
   ReactNode,
   useReducer,
+  useState,
   useEffect,
 } from "react";
 import todoReducer from "@/reducers/todoReducer";
@@ -23,6 +24,7 @@ const TodoContext = createContext<TodoContextData>({} as TodoContextData);
 
 export const TodoProvider = ({ children }: { children: ReactNode }) => {
   const [todos, dispatch] = useReducer(todoReducer, []);
+  const [initialized, setInitialized] = useState<Boolean>(false);
   const { search } = useTodoContext();
 
   useEffect(() => {
@@ -34,9 +36,16 @@ export const TodoProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (initialized) {
+      saveTodos(todos);
+    } else {
+      setInitialized(true);
+    }
+  }, [todos]);
+
   const addTodo = (todo: TodoItem) => {
     dispatch({ type: "ADD_TODO", payload: todo });
-    saveTodos([...todos, todo]);
   };
 
   const changeCompleted = (id: string, completed: boolean) => {
